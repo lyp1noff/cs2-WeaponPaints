@@ -10,7 +10,7 @@ namespace WeaponPaints;
 public partial class WeaponPaints : BasePlugin, IPluginConfig<WeaponPaintsConfig>
 {
 	internal static WeaponPaints Instance { get; private set; } = new();
-
+	private SkinReloadListener? _skinReloadListener;
 	public WeaponPaintsConfig Config { get; set; } = new();
     private static WeaponPaintsConfig _config { get; set; } = new();
     public override string ModuleAuthor => "Nereziel & daffyy";
@@ -21,6 +21,9 @@ public partial class WeaponPaints : BasePlugin, IPluginConfig<WeaponPaintsConfig
 	public override void Load(bool hotReload)
 	{
 		Instance = this;
+		
+		_skinReloadListener = new SkinReloadListener();
+		_skinReloadListener.Start();
 
 		if (hotReload)
 		{
@@ -63,6 +66,11 @@ public partial class WeaponPaints : BasePlugin, IPluginConfig<WeaponPaintsConfig
 		Utility.LoadPinsFromFile(ModuleDirectory + $"/data/collectibles_{_config.SkinsLanguage}.json", Logger);
 
 		RegisterListeners();
+	}
+	
+	public override void Unload(bool hotReload)
+	{
+		_skinReloadListener?.Stop();
 	}
 
 	public void OnConfigParsed(WeaponPaintsConfig config)

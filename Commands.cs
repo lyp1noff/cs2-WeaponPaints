@@ -11,7 +11,7 @@ namespace WeaponPaints;
 
 public partial class WeaponPaints
 {
-	private void OnCommandRefresh(CCSPlayerController? player, CommandInfo command)
+	public void OnCommandRefresh(CCSPlayerController? player, CommandInfo command)
 	{
 		if (!Config.Additional.CommandWpEnabled || !Config.Additional.SkinEnabled || !_gBCommandsAllowed) return;
 		if (!Utility.IsPlayerValid(player)) return;
